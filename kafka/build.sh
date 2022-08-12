@@ -1,13 +1,11 @@
 #!/usr/bin/env bash 
 
-docker pull bitnami/kafka
+docker pull harisekhon/kafka 
 
 docker stop kafka
 
 docker rm kafka
 
-docker run -d --name kafka \
-    --network app-tier \
-    -e ALLOW_PLAINTEXT_LISTENER=yes \
-    -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper-server:2181 \
-    bitnami/kafka:latest
+docker run -dit --name kafka \
+   -p 2182:2181 -p 9092:9092 \
+    harisekhon/kafka:latest
