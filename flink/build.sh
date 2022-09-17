@@ -1,6 +1,7 @@
 #!/usr/bin/env bash 
 
-docker pull flink:scala_2.12-java8
+#docker pull flink:scala_2.12-java8
+# docker pull flink:1.15-scala_2.12-java8
 
 docker stop jobmanager
 docker rm jobmanager
@@ -10,11 +11,11 @@ docker rm taskmanager
 FLINK_PROPERTIES="jobmanager.rpc.address: jobmanager"
 
 docker run -dit --name="jobmanager" \
-  --network flink-network -p 8081:8081  \
+  --detach -p 8081:8081  \
   --env FLINK_PROPERTIES="${FLINK_PROPERTIES}" \
-  flink:scala_2.12-java8 jobmanager
+  flink:1.15-scala_2.12-java8 jobmanager
 
 docker run -dit --name="taskmanager" \
-  --network flink-network  \
+  --detach   \
   --env FLINK_PROPERTIES="${FLINK_PROPERTIES}" \
-  flink:scala_2.12-java8 taskmanager
+  flink:1.15-scala_2.12-java8 taskmanager
