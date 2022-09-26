@@ -20,11 +20,33 @@ export JAVA_HOME="${JAVA_HOME:-/usr}"
 
 export PATH="$PATH:/hadoop/sbin:/hadoop/bin"
 
+function idRsaNotExist() {
+   user_name="$1"
+   if [ "$user_name" == "root" ];then
+        if [ -f "/root/.ssh/id_rsa" ];then
+            echo "/root/.ssh/id_rsa exists"
+            return 1
+        else
+            echo "/root/.ssh/id_rsa not exists"
+            return 0
+        fi
+   fi
+   if [ -f "/home/$user_name/.ssh/id_rsa" ];then
+        echo "/home/$user_name/.ssh/id_rsa exists"
+        return 1
+   fi
+   echo "/home/$user_name/.ssh/id_rsa not exists"
+   return 0
+
+}
+
 if [ $# -gt 0 ]; then
     exec "$@"
 else
     for x in root hdfs yarn; do
-        if ! [ -f "/$x/.ssh/id_rsa" ]; then
+        echo "/$x/.ssh/id_rsa"
+
+        if idRsaNotExist $x; then
             su - "$x" <<-EOF
                 [ -n "${DEBUG:-}" ] && set -x
                 ssh-keygen -t rsa -f ~/.ssh/id_rsa -N ""
@@ -79,7 +101,9 @@ EOF
     mkdir -pv /hadoop/logs
 
     sed -i "s/localhost/$hostname/" /hadoop/etc/hadoop/core-site.xml
-    rm /run/nologin
+    if [ -f "/run/nologin" ];then
+        rm /run/nologin
+    fi
     start-dfs.sh
     start-yarn.sh
     tail -f /dev/null /hadoop/logs/*
