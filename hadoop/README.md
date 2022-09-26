@@ -6,9 +6,8 @@ sudo ./build.sh
 ```
 
 hdfs路径：
-http://172.17.0.2:50070/explorer.html#/
+http://172.17.0.2:9870/dfshealth.html#tab-overview
 
-http://172.17.0.2:50075/datanode.html 
 
 yarn路径
 http://172.17.0.2:8088/cluster 
