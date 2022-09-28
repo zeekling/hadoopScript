@@ -99,6 +99,8 @@ EOF
     fi | tee -a /root/.ssh/known_hosts
 
     mkdir -pv /hadoop/logs
+    mkdir -p /dfs/data
+    chown -R hdfs:hadoop /dfs/
 
     sed -i "s/localhost/$hostname/" /hadoop/etc/hadoop/core-site.xml
     if [ -f "/run/nologin" ];then
@@ -107,6 +109,4 @@ EOF
     start-dfs.sh
     start-yarn.sh
     tail -f /dev/null /hadoop/logs/*
-    stop-yarn.sh
-    stop-dfs.sh
 fi

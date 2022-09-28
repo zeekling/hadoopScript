@@ -33,7 +33,7 @@ RUN rm -rf /etc/yum.repos.d/*.repo
 
 COPY ./CentOS-8-reg.repo /etc/yum.repos.d/CentOS-Base.repo
 
-RUN yum clean all && yum makecache && yum install -y openssh-server openssh-clients tar which
+RUN yum clean all && yum makecache && yum install -y openssh-server openssh-clients tar which vim
 
 RUN set -eux && \
     yum install -y wget hostname && \
@@ -94,6 +94,6 @@ ENV YARN_NODEMANAGER_USER=yarn
 
 #EXPOSE 8020 8042 8088 9000 10020 19888 50010 50020 50070 50075 50090
 # Hadoop 3.0 changed ports :-(
-EXPOSE 8020 8042 8088 9000 9868 9870 10020 19888 50010 50020 50090
+EXPOSE 9870 9871 19888 8088 9864-9869 8020 9000 9820 8032
 
 CMD ["/entrypoint.sh"]
